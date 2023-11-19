@@ -8,7 +8,7 @@ from torch import nn
 from tqdm import tqdm
 from datetime import datetime
 
-from SimpleCNN import SimpleCNN
+from simple_cnn import SimpleCNN
 import validation_functions as valid
 import dataset_loader as loader
 
