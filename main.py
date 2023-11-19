@@ -94,11 +94,12 @@ def train():
     with open(output_dir + "/results.txt", "w") as file:
         file.write(results)
     wandb.finish()
+    print(f"Output model file to {output_dir}/model.pth\n")
 
     print("Training finished")
 
 
-def predict():
+def predict(model_path):
     # CUDA（GPU）を使用するように切り替える
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.multiprocessing.freeze_support()
@@ -114,8 +115,7 @@ def predict():
     model = model.eval()
 
     # 学習済みモデルのパラメータを読み込み
-    path = "20231119175655"
-    model.load_state_dict(torch.load(f"outputs/{path}/model.pth"))
+    model.load_state_dict(torch.load(model_path))
 
     # テストデータの読み込み
     test_loader = load_test_image(batch_size, num_workers)
@@ -153,4 +153,4 @@ def show_img(img):
 
 if __name__ == '__main__':
     train()
-    # predict()
+    # predict(model_path="outputs/20231119175655/model.pth")
