@@ -2,8 +2,8 @@
 ι208研究室の `(0, 0)` と `(13, 12)` の2地点をCNNで分類する、基礎的なディープラーニングモデルです。
 サンプルは Python 3.10 と PyTorch 2.1.1 によって構築されています。
 
-![PXL_20230613_071427827](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/91b00adc-6a81-4b76-8268-b94d0dc28226)
-![PXL_20230613_071338135](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/99dcfe10-c5d2-4766-a782-6f4185e9c733)
+![PXL_20230613_071427827](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/c1687d33-d2ba-4a97-99c2-03e8bc9d924b)
+![PXL_20230613_071338135](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/745ee9d2-145e-4ce5-ad8b-64c1c62c34ec)
 
 ## 環境構築
 1. GitHubからクローンして、ディレクトリに移動します。
