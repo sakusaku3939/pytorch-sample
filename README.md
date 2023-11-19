@@ -38,3 +38,10 @@ wandb login
 ```
 python main.py
 ```
+<br>
+
+推論時には、以下のように main.py の`predict`のコメントアウトを外し、model_path の`20231119175655`の部分を使用したいモデルのパスに置き換えることで、テストデータへの予測精度を確認できます。
+```
+# train()
+predict(model_path="outputs/20231119175655/model.pth")
+```
