@@ -6,7 +6,7 @@ def get_classification_accuracy(pred, labels):
     total = 0
     correct = 0
 
-    # 各行から最大値を選んで、最大値のindexを格納する
+    # 各行から最大値を選んで、数字が大きい方のindexを格納する
     _, pred = torch.max(pred.data, dim=1)
     # Tensorの0次元目のサイズを取得
     total += labels.size(0)

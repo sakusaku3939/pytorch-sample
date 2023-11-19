@@ -3,14 +3,16 @@ import torch
 import torch.optim as optim
 import random
 import numpy as np
+import torchvision
 import wandb
+import matplotlib.pyplot
 from torch import nn
 from tqdm import tqdm
 from datetime import datetime
 
 from simple_cnn import SimpleCNN
-import validation_functions as valid
-import dataset_loader as loader
+from validation_functions import get_classification_accuracy
+from dataset_loader import load_image, load_test_image
 
 num_epochs = 10  # 学習の回数
 batch_size = 5  # 一回の学習でデータ取り込む数
@@ -46,7 +48,7 @@ def train():
     optimizer = optim.Adam(model.parameters())
 
     # 学習・検証データの読み込み
-    train_loader, valid_loader = loader.load_image(batch_size, num_workers, random_state)
+    train_loader, valid_loader = load_image(batch_size, num_workers, random_state)
 
     for epoch in range(1, num_epochs + 1):
         running_loss = 0.0
@@ -67,20 +69,18 @@ def train():
             loss.backward()
             optimizer.step()
 
-            running_loss += loss.item()
+            running_loss = loss.item()
 
         # 検証フェーズ
         model = model.eval()
         with torch.no_grad():
-            running_score = 0.0
-
             for j, data in tqdm(enumerate(valid_loader, 0)):
                 inputs = data[0].to(device)
                 labels = data[1].to(device)
 
                 # モデルの精度（正解率）を検証する
                 pred = model(inputs)
-                running_score += valid.get_classification_accuracy(pred, labels)
+                running_score = get_classification_accuracy(pred, labels)
 
         # 各エポック結果を記録
         epoch_loss, epoch_score = running_loss / (i + 1), running_score / (j + 1)
@@ -98,5 +98,59 @@ def train():
     print("Training finished")
 
 
+def predict():
+    # CUDA（GPU）を使用するように切り替える
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    torch.multiprocessing.freeze_support()
+
+    # 分類クラスの一覧
+    classes = ["(0, 0)", "(13, 12)"]
+    classes_correct_n = [0, 0]
+    classes_total_n = [0, 0]
+
+    # CNNモデルを指定
+    model = SimpleCNN()
+    model = model.to(device)
+    model = model.eval()
+
+    # 学習済みモデルのパラメータを読み込み
+    path = "20231119175655"
+    model.load_state_dict(torch.load(f"outputs/{path}/model.pth"))
+
+    # テストデータの読み込み
+    test_loader = load_test_image(batch_size, num_workers)
+
+    with torch.no_grad():
+        for data in test_loader:
+            inputs = data[0].to(device)
+            labels = data[1].to(device)
+
+            # モデルによる推論を行い、数字が大きい方のindexを取得する
+            pred = model(inputs)
+            _, pred = torch.max(pred.data, dim=1)
+
+            for i in range(batch_size):
+                if pred[i] == labels[i]:
+                    # 分類に成功した数をカウント
+                    classes_correct_n[labels[i]] += 1
+                else:
+                    # 分類に失敗した画像を表示する
+                    show_img(torchvision.utils.make_grid(inputs[i]))
+                classes_total_n[labels[i]] += 1
+
+    # 各クラスごとの正解率を表示
+    for i in range(2):
+        accuracy = classes_correct_n[i] / classes_total_n[i]
+        print(f"Accuracy of {classes[i]} : {100 * accuracy} %")
+
+
+def show_img(img):
+    img = img / 2 + 0.5
+    numpy_img = img.numpy()
+    matplotlib.pyplot.imshow(np.transpose(numpy_img, (1, 2, 0)))
+    matplotlib.pyplot.show()
+
+
 if __name__ == '__main__':
     train()
+    # predict()

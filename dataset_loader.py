@@ -35,3 +35,24 @@ def load_image(batch_size, num_workers, random_state):
     )
 
     return train_loader, valid_loader
+
+
+def load_test_image(batch_size, num_workers):
+    # データの前処理
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor()
+    ])
+
+    # データセットの読み込み
+    dataset = torchvision.datasets.ImageFolder("./data/test", transform)
+
+    # DataLoaderに変換
+    test_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+    )
+
+    return test_loader
