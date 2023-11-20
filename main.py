@@ -14,7 +14,7 @@ from simple_cnn import SimpleCNN
 from validation_functions import get_classification_accuracy
 from dataset_loader import load_image, load_test_image
 
-num_epochs = 10  # 学習の回数
+num_epochs = 8  # 学習の回数
 batch_size = 5  # 一回の学習でデータ取り込む数
 num_workers = 2  # 並列実行の数
 
@@ -51,7 +51,7 @@ def train():
     train_loader, valid_loader = load_image(batch_size, num_workers, random_state)
 
     for epoch in range(1, num_epochs + 1):
-        running_loss = 0.0
+        running_loss, running_score = 0.0, 0.0
         print(f"Epoch: {epoch}")
 
         # 学習フェーズ
@@ -69,7 +69,7 @@ def train():
             loss.backward()
             optimizer.step()
 
-            running_loss = loss.item()
+            running_loss += loss.item()
 
         # 検証フェーズ
         model = model.eval()
@@ -80,10 +80,11 @@ def train():
 
                 # モデルの精度（正解率）を検証する
                 pred = model(inputs)
-                running_score = get_classification_accuracy(pred, labels)
+                running_score += get_classification_accuracy(pred, labels)
 
-        # 各エポック結果を記録
-        epoch_loss, epoch_score = running_loss / (i + 1), running_score / (j + 1)
+        # 各エポック結果の平均を記録
+        epoch_loss = running_loss / len(train_loader)
+        epoch_score = running_score / len(valid_loader)
         wandb.log({"Epoch": epoch, "Loss": epoch_loss, "Score": epoch_score})
         results += ("Epoch:" + str(epoch) + "  " + f"Loss: {epoch_loss}  Score: {epoch_score}\n")
 
@@ -94,7 +95,7 @@ def train():
     with open(output_dir + "/results.txt", "w") as file:
         file.write(results)
     wandb.finish()
-    print(f"Output model file to {output_dir}/model.pth\n")
+    print(f"Output file to {output_dir}/model.pth\n")
 
     print("Training finished")
 

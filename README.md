@@ -13,15 +13,21 @@ cd pytorch-sample
 ```
 <br>
 
-2. Pythonのvenvを使用して、作業ディレクトリに仮想環境を作成します。
+2. Pythonのvenvを使用して作業ディレクトリに仮想環境を作成した後、移動します。
+- Mac, Linux
 ```
 python -m venv venv
+source venv/bin/activate
+```
+- Windows
+```
+python -m venv venv
+.\venv\Scripts\activate
 ```
 <br>
 
-3. 仮想環境に移動後、必要なライブラリをインストールします。
+3. 仮想環境の中で、必要なライブラリをインストールします。
 ```
-.\venv\Scripts\activate
 pip install -r requirements.txt
 ```
 <br>
@@ -37,4 +43,11 @@ wandb login
 5. 以上で、モデルの学習を開始できます！
 ```
 python main.py
+```
+<br>
+
+推論時には、以下のように main.py の`predict`のコメントアウトを外し、model_path の`20231119175655`の部分を使用したいモデルのパスに置き換えることで、テストデータへの予測精度を確認できます。
+```
+# train()
+predict(model_path="outputs/20231119175655/model.pth")
 ```
