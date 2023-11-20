@@ -2,6 +2,8 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 
+from custom_dataset import CustomDataset
+
 
 def load_image(batch_size, num_workers, random_state):
     # データの前処理
@@ -11,8 +13,8 @@ def load_image(batch_size, num_workers, random_state):
     ])
 
     # データセットの読み込み
-    train_set = torchvision.datasets.ImageFolder("./data/train", transform)
-    valid_set = torchvision.datasets.ImageFolder("./data/valid", transform)
+    train_set = CustomDataset("./data/train_data.csv", transform)
+    valid_set = CustomDataset("./data/valid_data.csv", transform)
 
     # 乱数シードの固定
     g = torch.Generator()
@@ -45,7 +47,7 @@ def load_test_image(batch_size, num_workers):
     ])
 
     # データセットの読み込み
-    dataset = torchvision.datasets.ImageFolder("./data/test", transform)
+    dataset = CustomDataset("./data/test_data.csv", transform)
 
     # DataLoaderに変換
     test_loader = torch.utils.data.DataLoader(
