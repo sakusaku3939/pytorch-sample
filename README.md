@@ -13,15 +13,21 @@ cd pytorch-sample
 ```
 <br>
 
-2. Pythonのvenvを使用して、作業ディレクトリに仮想環境を作成します。
+2. Pythonのvenvを使用して作業ディレクトリに仮想環境を作成した後、移動します。
+- Mac, Linux
 ```
 python -m venv venv
+source venv/bin/activate
+```
+- Windows
+```
+python -m venv venv
+.\venv\Scripts\activate
 ```
 <br>
 
-3. 仮想環境に移動後、必要なライブラリをインストールします。
+3. 仮想環境の中で、必要なライブラリをインストールします。
 ```
-.\venv\Scripts\activate
 pip install -r requirements.txt
 ```
 <br>
