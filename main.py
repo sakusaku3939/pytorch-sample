@@ -47,14 +47,14 @@ def train():
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters())
 
-    # 学習・検証データの読み込み
+    # 訓練・検証データの読み込み
     train_loader, valid_loader = load_image(batch_size, num_workers, random_state)
 
     for epoch in range(1, num_epochs + 1):
         running_loss, running_score = 0.0, 0.0
         print(f"Epoch: {epoch}")
 
-        # 学習フェーズ
+        # 訓練フェーズ
         model = model.train()
         for i, data in tqdm(enumerate(train_loader, 0)):
             inputs = data[0].to(device)
