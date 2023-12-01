@@ -38,6 +38,7 @@ def train():
     # CUDA（GPU）を使用するように切り替える
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.multiprocessing.freeze_support()
+    print(f"Device type: {device}")
 
     # CNNモデルを指定
     model = SimpleCNN()
