@@ -1,6 +1,6 @@
 # pytorch-sample
-ι208研究室の `(0, 0)` と `(13, 12)` の2地点をCNNで分類する、ディープラーニングモデルです。
-サンプルは Python 3.10 と PyTorch 2.1.1 によって構築されています。
+ι208研究室の`(0, 0)`と`(13, 12)`の2地点をCNNで分類する深層学習モデルのサンプルです。
+本リポジトリは、Python 3.10とPyTorch 2.1.1を使用します。
 
 ![PXL_20230613_071427827](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/c1687d33-d2ba-4a97-99c2-03e8bc9d924b)
 ![PXL_20230613_071338135](https://github.com/sakusaku3939/pytorch-sample/assets/53967490/745ee9d2-145e-4ce5-ad8b-64c1c62c34ec)
